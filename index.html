@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Habib Kabadi Shop - Best Scrap Buyer in Gurugram</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #06b6d4 100%);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.3), transparent 50%),
+                  radial-gradient(circle at 80% 80%, rgba(6, 182, 212, 0.2), transparent 50%);
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+      padding: 1rem;
+    }
+
+    .header {
+      text-align: center;
+      padding: 2rem 1rem;
+      margin-bottom: 2rem;
+      animation: fadeInDown 0.8s ease;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .logo {
+      font-size: 4rem;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+    }
+
+    .header h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+      letter-spacing: -0.5px;
+    }
+
+    .header .subtitle {
+      color: rgba(255, 255, 255, 0.95);
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+
+    .contact-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 1.5rem;
+    }
+
+    .badge {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      color: #1e293b;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .badge:hover {
+      transform: translateY(-3px);
+    }
+
+    .badge a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .services-section {
+      margin-bottom: 3rem;
+      animation: fadeInUp 0.8s ease;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 2rem;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .service-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s ease;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      text-align: center;
+    }
+
+    .service-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    }
+
+    .service-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    }
+
+    .service-name {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 0.5rem;
+    }
+
+    .service-price {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #3b82f6;
+      margin: 0.5rem 0;
+    }
+
+    .service-desc {
+      color: #64748b;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .camera-section {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      animation: fadeInUp 1s ease;
+    }
+
+    .camera-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    #camera-preview {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      border-radius: 15px;
+      background: #000;
+      display: none;
+    }
+
+    .camera-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .btn {
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, #3b82f6 0%, #1e3a8a 100%);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    }
+
+    #image-preview {
+      display: none;
+      max-width: 600px;
+      margin: 1rem auto;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .reviews-section {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      animation: fadeInUp 1.2s ease;
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .review-card {
+      background: #f8fafc;
+      padding: 1.5rem;
+      border-radius: 15px;
+      border-left: 4px solid #3b82f6;
+    }
+
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .reviewer-name {
+      font-weight: 700;
+      color: #1e293b;
+      font-size: 1.1rem;
+    }
+
+    .stars {
+      color: #fbbf24;
+      font-size: 1.2rem;
+    }
+
+    .review-text {
+      color: #475569;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    .review-date {
+      color: #94a3b8;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+    }
+
+    .map-section {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      animation: fadeInUp 1.4s ease;
+    }
+
+    .map-container {
+      width: 100%;
+      height: 400px;
+      border-radius: 15px;
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+
+    .footer {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.95);
+      padding: 2rem;
+      font-size: 0.95rem;
+      animation: fadeIn 1.5s ease;
+    }
+
+    .footer-address {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      padding: 1.5rem;
+      border-radius: 15px;
+      margin: 1rem auto;
+      max-width: 600px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .whatsapp-float {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      bottom: 40px;
+      right: 40px;
+      background: #25d366;
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      font-size: 30px;
+      box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.3);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      animation: pulse 2s infinite;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+      70% { box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .whatsapp-float {
+        width: 50px;
+        height: 50px;
+        bottom: 20px;
+        right: 20px;
+        font-size: 24px;
+      }
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .upload-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+      color: white;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .upload-label:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo-section">
+        <span class="logo">♻️</span>
+      </div>
+      <h1>Habib Kabadi Shop</h1>
+      <p class="subtitle">Best Scrap Buyer in Gurugram - We Buy All Types of Scrap at Best Rates</p>
+      
+      <div class="contact-badges">
+        <div class="badge">
+          <span>👤</span>
+          <span>Habib Ahmad & Harish Ahmad</span>
+        </div>
+        <div class="badge">
+          <span>📞</span>
+          <a href="tel:+919891360419">+91 98913 60419</a>
+        </div>
+        <div class="badge">
+          <span>💬</span>
+          <a href="https://wa.me/919816398320" target="_blank">+91 98163 98320</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="services-section">
+      <h2 class="section-title">🛒 Items We Buy at Best Prices</h2>
+      
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">🔩</div>
+          <div class="service-name">Iron & Steel</div>
+          <div class="service-price">₹35-45/kg</div>
+          <div class="service-desc">Old iron gates, rods, steel furniture, metal scraps</div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">🔶</div>
+          <div class="service-name">Copper</div>
+          <div class="service-price">₹500-600/kg</div>
+          <div class="service-desc">Copper wires, pipes, utensils, electrical items</div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">🥈</div>
+          <div class="service-name">Brass & Aluminum</div>
+          <div class="service-price">₹280-350/kg</div>
+          <div class="service-desc">Brass items, aluminum utensils, window frames</div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">🧴</div>
+          <div class="service-name">Plastic Scrap</div>
+          <div class="service-price">₹15-25/kg</div>
+          <div class="service-desc">All types of plastic bottles, containers, pipes</div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">❄️</div>
+          <div class="service-name">Old AC & Fridge</div>
+          <div class="service-price">₹2000-8000/unit</div>
+          <div class="service-desc">Window AC, split AC, refrigerators (working/not working)</div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">👕</div>
+          <div class="service-name">Washing Machine</div>
+          <div class="service-price">₹1500-4000/unit</div>
+          <div class="service-desc">Top load, front load, semi-automatic machines</div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">🔥</div>
+          <div class="service-name">Oven & Microwave</div>
+          <div class="service-price">₹500-2000/unit</div>
+          <div class="service-desc">Microwave ovens, OTG, electric ovens</div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">📺</div>
+          <div class="service-name">Electronics</div>
+          <div class="service-price">₹500-5000/unit</div>
+          <div class="service-desc">Old TV, computer, laptop, mobile phones</div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">📰</div>
+          <div class="service-name">Paper & Cardboard</div>
+          <div class="service-price">₹12-18/kg</div>
+          <div class="service-desc">Newspapers, books, cardboard boxes, magazines</div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">🍾</div>
+          <div class="service-name">Glass & Bottles</div>
+          <div class="service-price">₹5-10/kg</div>
+          <div class="service-desc">Glass bottles, broken glass, beer bottles</div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">🔋</div>
+          <div class="service-name">Batteries</div>
+          <div class="service-price">₹80-150/kg</div>
+          <div class="service-desc">Car batteries, inverter batteries, UPS batteries</div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">🪑</div>
+          <div class="service-name">Old Furniture</div>
+          <div class="service-price">Best Price</div>
+          <div class="service-desc">Wooden furniture, steel almirahs, office furniture</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="camera-section">
+      <h2 class="section-title">📸 Send Us Your Scrap Photos for Instant Quote</h2>
+      
+      <div class="camera-container">
+        <!-- The video element for the camera preview. -->
+        <video id="camera-preview" autoplay playsinline></video>
+        <!-- The image element for the captured/uploaded photo preview -->
+        <img id="image-preview" alt="Preview">
+        
+        <div class="camera-controls">
+          <button class="btn" id="start-camera">
+            <span>📷</span>
+            <span>Open Camera</span>
+          </button>
+          
+          <button class="btn btn-secondary hidden" id="capture-photo">
+            <span>📸</span>
+            <span>Take Photo</span>
+          </button>
+
+          <!-- The label triggers the file input below -->
+          <label for="file-upload" class="upload-label">
+            <span>🖼️</span>
+            <span>Upload Photo</span>
+          </label>
+          <!-- This standard file input (without the 'capture' attribute) will open the gallery/file picker -->
+          <input type="file" id="file-upload" accept="image/*">
+          
+          <button class="btn btn-secondary hidden" id="send-whatsapp">
+            <span>💬</span>
+            <span>Send to WhatsApp</span>
+          </button>
+          
+          <button class="btn btn-danger hidden" id="retake">
+            <span>🔄</span>
+            <span>Retake</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="reviews-section">
+      <h2 class="section-title">⭐ Customer Reviews</h2>
+      
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="review-header">
+            <div class="reviewer-name">Rajesh Kumar</div>
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+          </div>
+          <div class="review-text">
+            "Best kabadi shop in Gurugram! Habib bhai gave me excellent rates for my old AC and washing machine. Very honest and professional service. Highly recommended!"
+          </div>
+          <div class="review-date">2 weeks ago</div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-header">
+            <div class="reviewer-name">Priya Sharma</div>
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+          </div>
+          <div class="review-text">
+            "Sold my old fridge and copper items. Got better price than other kabadi shops. They came to my home for pickup. Very convenient and trustworthy."
+          </div>
+          <div class="review-date">1 month ago</div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-header">
+            <div class="reviewer-name">Amit Verma</div>
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+          </div>
+          <div class="review-text">
+            "Excellent service! I called them for old newspapers and iron scrap. They weighed everything properly and gave fair prices. Will definitely call again."
+          </div>
+          <div class="review-date">3 weeks ago</div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-header">
+            <div class="reviewer-name">Neha Singh</div>
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+          </div>
+          <div class="review-text">
+            "Very polite and professional. Bought all my plastic and paper scrap at good rates. The WhatsApp photo feature is very helpful for getting quick quotes!"
+          </div>
+          <div class="review-date">5 days ago</div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-header">
+            <div class="reviewer-name">Suresh Gupta</div>
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+          </div>
+          <div class="review-text">
+            "Best kabadiwala in Sikanderpur! They buy everything - electronics, metals, appliances. Payment is instant and rates are always competitive. Fully satisfied!"
+          </div>
+          <div class="review-date">1 week ago</div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-header">
+            <div class="reviewer-name">Kavita Mehra</div>
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+          </div>
+          <div class="review-text">
+            "Cleared my entire house of old furniture and appliances. Habib Ahmad and team were very helpful. They even helped in loading heavy items. Great experience!"
+          </div>
+          <div class="review-date">2 months ago</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="map-section">
+      <h2 class="section-title">📍 Visit Our Location</h2>
+      <div class="map-container">
+        <iframe 
+          width="100%" 
+          height="400" 
+          frameborder="0" 
+          scrolling="no" 
+          marginheight="0" 
+          marginwidth="0" 
+          src="https://maps.google.com/maps?width=100%25&amp;height=400&amp;hl=en&amp;q=Sikanderpur%20Ghosi,%20Gurugram%20122002+(Habib%20Kabadi%20Shop)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed">
+        </iframe>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-address">
+        <h3 style="margin-bottom: 1rem; font-size: 1.3rem;">📍 Our Address</h3>
+        <p style="font-size: 1.1rem; line-height: 1.8;">
+          <strong>Habib Kabadi Shop</strong><br>
+          Near Dr. Lohia Clinic<br>
+          Sikanderpur Ghosi, Gurugram 122002<br>
+          Haryana, India
+        </p>
+      </div>
+      
+      <p style="margin-top: 1.5rem; font-size: 1rem;">
+        <strong>Business Hours:</strong> Monday - Sunday | 8:00 AM - 8:00 PM
+      </p>
+      
+      <p style="margin-top: 1rem; opacity: 0.9;">
+        © 2024 Habib Kabadi Shop | Best Scrap Buyer in Gurugram
+      </p>
+    </div>
+  </div>
+
+  <a href="https://wa.me/919816398320?text=Hi%20Habib%20Kabadi%20Shop!%20I%20want%20to%20sell%20my%20scrap." target="_blank" class="whatsapp-float">
+    💬
+  </a>
+
+  <script>
+    let stream = null;
+    let capturedImage = null;
+
+    const cameraPreview = document.getElementById('camera-preview');
+    const imagePreview = document.getElementById('image-preview');
+    const startCameraBtn = document.getElementById('start-camera');
+    const captureBtn = document.getElementById('capture-photo');
+    const sendWhatsAppBtn = document.getElementById('send-whatsapp');
+    const retakeBtn = document.getElementById('retake');
+    const fileUpload = document.getElementById('file-upload');
+    const uploadLabel = document.querySelector('.upload-label'); 
+
+    const whatsappNumber = '919816398320';
+    const whatsappMessage = encodeURIComponent("Hello Habib Kabadi Shop! I'd like a quote for the attached scrap photo.");
+
+    // Utility functions to manage UI visibility
+    function show(element) {
+        element.classList.remove('hidden');
+    }
+
+    function hide(element) {
+        element.classList.add('hidden');
+    }
+
+    // Function to start camera stream (triggered by "Open Camera")
+    async function startCamera() {
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+        }
+        try {
+            // Request camera access, preferring the environment (back) camera
+            const constraints = {
+                video: {
+                    facingMode: 'environment'
+                }
+            };
+            stream = await navigator.mediaDevices.getUserMedia(constraints);
+            cameraPreview.srcObject = stream;
+            
+            // Update UI to show video and capture button
+            show(cameraPreview);
+            hide(imagePreview);
+            hide(startCameraBtn);
+            show(captureBtn);
+            hide(sendWhatsAppBtn);
+            hide(retakeBtn);
+            hide(uploadLabel); 
+            capturedImage = null;
+
+            // Start playing the video stream
+            cameraPreview.onloadedmetadata = () => {
+                cameraPreview.play();
+            };
+
+        } catch (err) {
+            console.error("Error accessing camera: ", err);
+            const message = "Could not start camera. Please ensure camera access is allowed or use the 'Upload Photo' option.";
+            console.error(message); 
+            
+            // Reset controls in case of failure
+            show(startCameraBtn);
+            hide(captureBtn);
+            hide(cameraPreview);
+            show(uploadLabel); 
+        }
+    }
+
+    // Function to capture photo from video stream
+    function capturePhoto() {
+        if (!stream) return;
+
+        // Create a temporary canvas element to draw the video frame
+        const canvas = document.createElement('canvas');
+        canvas.width = cameraPreview.videoWidth;
+        canvas.height = cameraPreview.videoHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(cameraPreview, 0, 0, canvas.width, canvas.height);
+
+        const dataURL = canvas.toDataURL('image/jpeg', 0.8);
+        capturedImage = dataURL;
+
+        // Stop the camera stream
+        stream.getTracks().forEach(track => track.stop());
+        stream = null;
+        
+        // Display the captured image
+        imagePreview.src = dataURL;
+        show(imagePreview);
+        hide(cameraPreview);
+
+        // Update controls
+        hide(captureBtn);
+        show(sendWhatsAppBtn);
+        show(retakeBtn);
+        hide(uploadLabel); 
+    }
+
+    // Function to handle file upload (Gallery/File Picker)
+    fileUpload.addEventListener('change', (event) => {
+        // If a camera stream was active (highly unlikely if starting from gallery), stop it.
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            stream = null;
+        }
+
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                capturedImage = e.target.result;
+                imagePreview.src = capturedImage;
+                
+                // Show the preview and hide camera/start button
+                show(imagePreview);
+                hide(cameraPreview);
+                hide(startCameraBtn);
+
+                // Update controls
+                hide(captureBtn);
+                show(sendWhatsAppBtn);
+                show(retakeBtn);
+                hide(uploadLabel); 
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Function to send image to WhatsApp
+    function sendToWhatsApp() {
+        if (!capturedImage) {
+            console.error("No image captured or uploaded.");
+            return;
+        }
+
+        // Show a temporary modal confirmation/instruction since files cannot be attached client-side
+        const confirmationBox = document.createElement('div');
+        confirmationBox.style.cssText = `
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.7); display: flex; justify-content: center; 
+            align-items: center; z-index: 9999;
+        `;
+        confirmationBox.innerHTML = `
+            <div style="background: white; padding: 25px; border-radius: 15px; max-width: 90%; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); font-family: 'Inter', sans-serif;">
+                <h3 style="color: #3b82f6; margin-bottom: 15px;">Action Required</h3>
+                <p style="margin-bottom: 20px;">
+                    We are about to open WhatsApp with a pre-filled message.
+                    <br><br>
+                    <strong>You MUST manually share the photo from your gallery/files</strong> once the chat opens.
+                </p>
+                <button id="whatsapp-ok" style="background: #25d366; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                    Continue to WhatsApp
+                </button>
+            </div>
+        `;
+        document.body.appendChild(confirmationBox);
+
+        document.getElementById('whatsapp-ok').addEventListener('click', () => {
+            document.body.removeChild(confirmationBox);
+            // Open WhatsApp with a pre-filled message
+            const whatsappURL = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+            window.open(whatsappURL, '_blank');
+        });
+    }
+
+    // Event Listeners
+    startCameraBtn.addEventListener('click', startCamera);
+    captureBtn.addEventListener('click', capturePhoto);
+    sendWhatsAppBtn.addEventListener('click', sendToWhatsApp);
+    
+    retakeBtn.addEventListener('click', () => {
+        // Stop any active camera stream
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            stream = null;
+        }
+
+        // Reset state and UI
+        capturedImage = null;
+        imagePreview.src = '';
+        hide(imagePreview);
+        hide(cameraPreview);
+
+        // Update controls to initial state (ready to start camera or upload)
+        show(startCameraBtn);
+        hide(captureBtn);
+        hide(sendWhatsAppBtn);
+        hide(retakeBtn);
+        show(uploadLabel); 
+        
+        // Clear file input value
+        fileUpload.value = null;
+    });
+
+    // Initial state setup on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        hide(captureBtn);
+        hide(sendWhatsAppBtn);
+        hide(retakeBtn);
+        hide(cameraPreview);
+        hide(imagePreview);
+        show(startCameraBtn);
+        show(uploadLabel);
+    });
+  </script>
+</body>
+</html>
