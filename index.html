@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Habib Scrap Shop - Best Scrap Buyer in Gurugram</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -187,13 +187,15 @@
     }
 
     #camera-preview {
-      width: 100%;
-      max-width: 600px;
-      margin: 0 auto;
-      border-radius: 15px;
-      background: #000;
-      display: none;
-    }
+  width: 100%;
+  max-width: 600px;
+  margin: 1rem auto;
+  border-radius: 15px;
+  background: #000;
+  display: none;
+  object-fit: cover;
+  aspect-ratio: 4 / 3;
+}
 
     .camera-controls {
       display: flex;
@@ -712,190 +714,186 @@
     const sendWhatsAppBtn = document.getElementById('send-whatsapp');
     const retakeBtn = document.getElementById('retake');
     const fileUpload = document.getElementById('file-upload');
-    const uploadLabel = document.querySelector('.upload-label'); 
+    const uploadLabel = document.querySelector('.upload-label');
 
     const whatsappNumber = '919816398320';
     const whatsappMessage = encodeURIComponent("Hello Habib Kabadi Shop! I'd like a quote for the attached scrap photo.");
 
-    // Utility functions to manage UI visibility
-    function show(element) {
-        element.classList.remove('hidden');
-    }
+    function show(el) { el.classList.remove('hidden'); }
+    function hide(el) { el.classList.add('hidden'); }
 
-    function hide(element) {
-        element.classList.add('hidden');
-    }
-
-    // Function to start camera stream (triggered by "Open Camera")
     async function startCamera() {
         if (stream) {
-            stream.getTracks().forEach(track => track.stop());
+            stream.getTracks().forEach(t => t.stop());
         }
+
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            alert("Camera not supported on this browser.");
+            return;
+        }
+
         try {
-            // Request camera access, preferring the environment (back) camera
             const constraints = {
                 video: {
-                    facingMode: 'environment'
+                    facingMode: { ideal: 'environment' },
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
                 }
             };
+
             stream = await navigator.mediaDevices.getUserMedia(constraints);
+
+            // Critical: Force video to play and ensure visibility
             cameraPreview.srcObject = stream;
-            
-            // Update UI to show video and capture button
+            cameraPreview.muted = true;
+            cameraPreview.playsInline = true;
+
+            // Ensure video is visible
+            cameraPreview.style.display = 'block';
+            cameraPreview.style.width = '100%';
+            cameraPreview.style.maxWidth = '600px';
+            cameraPreview.style.height = 'auto';
+            cameraPreview.style.borderRadius = '15px';
+            cameraPreview.style.background = '#000';
+
+            // Wait for metadata, then play
+            cameraPreview.onloadedmetadata = () => {
+                cameraPreview.play().catch(err => {
+                    console.warn("Play interrupted:", err);
+                });
+            };
+
+            // UI Updates
             show(cameraPreview);
             hide(imagePreview);
             hide(startCameraBtn);
             show(captureBtn);
             hide(sendWhatsAppBtn);
             hide(retakeBtn);
-            hide(uploadLabel); 
-            capturedImage = null;
-
-            // Start playing the video stream
-            cameraPreview.onloadedmetadata = () => {
-                cameraPreview.play();
-            };
+            hide(uploadLabel);
 
         } catch (err) {
-            console.error("Error accessing camera: ", err);
-            const message = "Could not start camera. Please ensure camera access is allowed or use the 'Upload Photo' option.";
-            console.error(message); 
-            
-            // Reset controls in case of failure
+            console.error("Camera error:", err);
+            let msg = "Camera failed to start.";
+            if (err.name === 'NotAllowedError') {
+                msg = "Permission denied. Please allow camera access.";
+            } else if (err.name === 'NotFoundError') {
+                msg = "No camera found.";
+            }
+            alert(msg + "\n\nUse 'Upload Photo' instead.");
+
             show(startCameraBtn);
+            show(uploadLabel);
             hide(captureBtn);
             hide(cameraPreview);
-            show(uploadLabel); 
         }
     }
 
-    // Function to capture photo from video stream
     function capturePhoto() {
         if (!stream) return;
 
-        // Create a temporary canvas element to draw the video frame
         const canvas = document.createElement('canvas');
-        canvas.width = cameraPreview.videoWidth;
-        canvas.height = cameraPreview.videoHeight;
+        canvas.width = cameraPreview.videoWidth || 640;
+        canvas.height = cameraPreview.videoHeight || 480;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(cameraPreview, 0, 0, canvas.width, canvas.height);
 
-        const dataURL = canvas.toDataURL('image/jpeg', 0.8);
-        capturedImage = dataURL;
+        capturedImage = canvas.toDataURL('image/jpeg', 0.9);
 
-        // Stop the camera stream
-        stream.getTracks().forEach(track => track.stop());
+        // Stop camera
+        stream.getTracks().forEach(t => t.stop());
         stream = null;
-        
-        // Display the captured image
-        imagePreview.src = dataURL;
+
+        // Show image
+        imagePreview.src = capturedImage;
+        imagePreview.style.display = 'block';
         show(imagePreview);
         hide(cameraPreview);
-
-        // Update controls
         hide(captureBtn);
         show(sendWhatsAppBtn);
         show(retakeBtn);
-        hide(uploadLabel); 
+        hide(uploadLabel);
     }
 
-    // Function to handle file upload (Gallery/File Picker)
-    fileUpload.addEventListener('change', (event) => {
-        // If a camera stream was active (highly unlikely if starting from gallery), stop it.
+    // File upload
+    fileUpload.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
         if (stream) {
-            stream.getTracks().forEach(track => track.stop());
+            stream.getTracks().forEach(t => t.stop());
             stream = null;
         }
 
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                capturedImage = e.target.result;
-                imagePreview.src = capturedImage;
-                
-                // Show the preview and hide camera/start button
-                show(imagePreview);
-                hide(cameraPreview);
-                hide(startCameraBtn);
-
-                // Update controls
-                hide(captureBtn);
-                show(sendWhatsAppBtn);
-                show(retakeBtn);
-                hide(uploadLabel); 
-            };
-            reader.readAsDataURL(file);
-        }
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            capturedImage = ev.target.result;
+            imagePreview.src = capturedImage;
+            imagePreview.style.display = 'block';
+            show(imagePreview);
+            hide(cameraPreview);
+            hide(startCameraBtn);
+            hide(captureBtn);
+            show(sendWhatsAppBtn);
+            show(retakeBtn);
+            hide(uploadLabel);
+        };
+        reader.readAsDataURL(file);
     });
 
-    // Function to send image to WhatsApp
     function sendToWhatsApp() {
-        if (!capturedImage) {
-            console.error("No image captured or uploaded.");
-            return;
-        }
+        if (!capturedImage) return;
 
-        // Show a temporary modal confirmation/instruction since files cannot be attached client-side
-        const confirmationBox = document.createElement('div');
-        confirmationBox.style.cssText = `
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.7); display: flex; justify-content: center; 
-            align-items: center; z-index: 9999;
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            position:fixed;top:0;left:0;width:100%;height:100%;
+            background:rgba(0,0,0,0.85);display:flex;align-items:center;
+            justify-content:center;z-index:9999;padding:1rem;
         `;
-        confirmationBox.innerHTML = `
-            <div style="background: white; padding: 25px; border-radius: 15px; max-width: 90%; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); font-family: 'Inter', sans-serif;">
-                <h3 style="color: #3b82f6; margin-bottom: 15px;">Action Required</h3>
-                <p style="margin-bottom: 20px;">
-                    We are about to open WhatsApp with a pre-filled message.
-                    <br><br>
-                    <strong>You MUST manually share the photo from your gallery/files</strong> once the chat opens.
+        modal.innerHTML = `
+            <div style="background:#fff;padding:1.5rem;border-radius:16px;max-width:90%;text-align:center;">
+                <h3 style="color:#3b82f6;margin-bottom:1rem;">Photo Ready!</h3>
+                <p style="margin-bottom:1.5rem;line-height:1.6;">
+                    WhatsApp will open.<br>
+                    <strong>Attach the photo manually</strong> from your gallery.
                 </p>
-                <button id="whatsapp-ok" style="background: #25d366; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
-                    Continue to WhatsApp
+                <button id="open-wa" style="background:#25d366;color:#fff;padding:0.75rem 1.5rem;border:none;border-radius:50px;font-weight:600;cursor:pointer;">
+                    Open WhatsApp
                 </button>
             </div>
         `;
-        document.body.appendChild(confirmationBox);
+        document.body.appendChild(modal);
 
-        document.getElementById('whatsapp-ok').addEventListener('click', () => {
-            document.body.removeChild(confirmationBox);
-            // Open WhatsApp with a pre-filled message
-            const whatsappURL = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
-            window.open(whatsappURL, '_blank');
-        });
+        document.getElementById('open-wa').onclick = () => {
+            modal.remove();
+            window.open(`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`, '_blank');
+        };
     }
+
+    retakeBtn.addEventListener('click', () => {
+        if (stream) {
+            stream.getTracks().forEach(t => t.stop());
+            stream = null;
+        }
+        capturedImage = null;
+        imagePreview.src = '';
+        fileUpload.value = '';
+
+        hide(imagePreview);
+        hide(cameraPreview);
+        hide(captureBtn);
+        hide(sendWhatsAppBtn);
+        hide(retakeBtn);
+        show(startCameraBtn);
+        show(uploadLabel);
+    });
 
     // Event Listeners
     startCameraBtn.addEventListener('click', startCamera);
     captureBtn.addEventListener('click', capturePhoto);
     sendWhatsAppBtn.addEventListener('click', sendToWhatsApp);
-    
-    retakeBtn.addEventListener('click', () => {
-        // Stop any active camera stream
-        if (stream) {
-            stream.getTracks().forEach(track => track.stop());
-            stream = null;
-        }
 
-        // Reset state and UI
-        capturedImage = null;
-        imagePreview.src = '';
-        hide(imagePreview);
-        hide(cameraPreview);
-
-        // Update controls to initial state (ready to start camera or upload)
-        show(startCameraBtn);
-        hide(captureBtn);
-        hide(sendWhatsAppBtn);
-        hide(retakeBtn);
-        show(uploadLabel); 
-        
-        // Clear file input value
-        fileUpload.value = null;
-    });
-
-    // Initial state setup on page load
+    // Initialize
     document.addEventListener('DOMContentLoaded', () => {
         hide(captureBtn);
         hide(sendWhatsAppBtn);
@@ -905,6 +903,6 @@
         show(startCameraBtn);
         show(uploadLabel);
     });
-  </script>
+</script>
 </body>
 </html>
